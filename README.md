@@ -3,6 +3,7 @@
 
 ## 点击 launch.bat 即可运行
 ### URL举例：http://#####n.chaoxing.com/live/viewNewCourseLive1?isStudent=1&liveId=11094####
+#### 需要ffmpeg，文件太大就没让上传
 #### 代码超烂，看了想打人的那种
 #### 目测不怎么会更新，我懒
 #### 额外感谢N_m3u8DL-CLI这个项目，优秀的下载器
