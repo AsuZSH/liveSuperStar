@@ -13,8 +13,7 @@ import csv  # 进行 .CSV 文件读写
 from selenium import webdriver  # 动态网页获取 pip install selenium==2.48.0
 from getM3U8 import getM3U8  # 调用getM3U8
 
-# example:python3 cmd.py http://www.jiaxingren.com/folder24/folder147/folder149/folder170/2018-10-25/416269.html
-# websiteUrl = "http://newesxidian.chaoxing.com/live/viewNewCourseLive1?isStudent=1&liveId=11017158"  # 正常
+# example:python3 cmd.py http://www.jiaxingren.###
 if len(argv) < 2:
     exit('请输入网页地址')
 else:
