@@ -9,9 +9,7 @@ import re  # 字符串正则
 from selenium import webdriver  # 动态网页获取 pip install selenium==2.48.0
 from urllib.parse import unquote  # 导入urlencode库，之后对url解码
 
-# example:python3 cmd.py http://www.jiaxingren.com/folder24/folder147/folder149/folder170/2018-10-25/416269.html
-# websiteUrl = "http://newesxidian.chaoxing.com/live/viewNewCourseLive1?isStudent=1&liveId=11016166" # 问题URL
-# websiteUrl = "http://newesxidian.chaoxing.com/live/viewNewCourseLive1?isStudent=1&liveId=11017158"  # 正常URL
+
 # if len(argv) < 2:
 #     exit('请输入网页地址')
 # else:
