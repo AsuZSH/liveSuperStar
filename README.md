@@ -7,5 +7,3 @@
 ### URL举例：http://***n.chaoxing.com/live/viewNewCourseLive1?isStudent=1&liveId=11094***
 #### 代码很烂
 #### 目测不怎么会更新，我懒
-
-
