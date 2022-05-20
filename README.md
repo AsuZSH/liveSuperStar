@@ -5,3 +5,6 @@
 ### URL举例：http://#####n.chaoxing.com/live/viewNewCourseLive1?isStudent=1&liveId=11094####
 #### 代码超烂，看了想打人的那种
 #### 目测不怎么会更新，我懒
+#### 额外感谢N_m3u8DL-CLI这个项目，优秀的下载器
+
+#### 超详细的注释。。。。（代码都是一个一个现查的，不详细一点谁知道是啥）
