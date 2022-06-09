@@ -1,4 +1,5 @@
 ## 超星录播下载
+### 看起来目前的m3u8下载器似乎不太够用，等啥时候再换aria2吧
 #### 一键下载某一科所有录播或者单个录播
 ###### 使用方法：下载之后，解压，点击main.exe
 ###### 链接举例：http://***n.chaoxing.com/live/viewNewCourseLive1?isStudent=1&liveId=11094***
