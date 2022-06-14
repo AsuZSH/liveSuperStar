@@ -356,7 +356,7 @@ if ifDownload == '1':  # 开始下载
                 print('            mobile已存在，跳过')
             else:
                 print('            正在下载mobile')
-                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 64 --minThreads 32 --timeOut 5 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_mobile', str(m3u8_mobile[i])),
+                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 32 --minThreads 2 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_mobile', str(m3u8_mobile[i])),
                                      shell=True)
                 return_code = p.wait()  # 等待子进程结束，并返回状态码；
         # 处理 m3u8_teacherTrack
@@ -368,7 +368,7 @@ if ifDownload == '1':  # 开始下载
                 print('            teacherTrack已存在，跳过')
             else:
                 print('            正在下载teacherTrack')
-                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 64 --minThreads 32 --timeOut 5 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_teacherTrack', str(m3u8_teacherTrack[i])),
+                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 32 --minThreads 2 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_teacherTrack', str(m3u8_teacherTrack[i])),
                                      shell=True)
                 return_code = p.wait()  # 等待子进程结束，并返回状态码；
         # 处理 m3u8_pptVideo
@@ -380,7 +380,7 @@ if ifDownload == '1':  # 开始下载
                 print('            pptVideo已存在，跳过')
             else:
                 print('            正在下载pptVideo')
-                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 64 --minThreads 32 --timeOut 5 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_pptVideo', str(m3u8_pptVideo[i])),
+                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 32 --minThreads 2 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_pptVideo', str(m3u8_pptVideo[i])),
                                      shell=True)
                 return_code = p.wait()  # 等待子进程结束，并返回状态码；
     print('下载任务结束！')
@@ -415,8 +415,8 @@ if ifCompose == '1':  # 执行合并
                 print('            视频合并成功！')
             else:
                 # 清除ffmpeg合并失败创建的文件
-                p = subprocess.Popen('del>nul 2>nul %s' % (savaFold+'\\'+class_name+'\\'+'视频'+'\\'+str(name[i])+'.mp4'),
-                                     stdout=None, shell=True)
+                # p = subprocess.Popen('del>nul 2>nul %s' % (savaFold+'\\'+class_name+'\\'+'视频'+'\\'+str(name[i])+'.mp4'),
+                #                      stdout=None, shell=True)
                 return_code = p.wait()  # 等待子进程结束，并返回状态码；
                 print('            合并失败，请检查设备是否支持！')
     print('视频合并任务结束！')
