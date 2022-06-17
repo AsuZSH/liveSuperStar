@@ -46,22 +46,22 @@ print()
 # 抓取 直播ID
 print('正在获取信息')
 try:
-    browser = webdriver.PhantomJS()
+    browser_getIndex = webdriver.PhantomJS()
 except:
     exit('    获取失败, 请重试')
-browser.get(websiteUrl)
+browser_getIndex.get(websiteUrl)
 live_id_info_list = []
 while live_id_info_list == []:
     try:
         # 不能确定是否正确执行的代码
-        live_id_info_list = browser.find_elements_by_xpath(
+        live_id_info_list = browser_getIndex.find_elements_by_xpath(
             '//*[@class="w_tab_btn w_live_btn"]')
     except:
         time.sleep(2)
 # 将 直播id 数量存到num_id
 num_id = len(live_id_info_list)
 # 课程名称 class_name
-class_name = browser.find_element_by_xpath(
+class_name = browser_getIndex.find_element_by_xpath(
     '/html/body/div[1]/div/div[1]/ul/li[1]/a').get_attribute("textContent")[3:]
 
 # %%
@@ -118,17 +118,17 @@ if oneOrAll == '2':
             live_info_xpath = '//*[@id="signleCourseList"]/li[' + \
                 str(i) + ']/div/a'
             # 获取 id 对应信息live_info_temp
-            live_info_temp = browser.find_element_by_xpath(
+            live_info_temp = browser_getIndex.find_element_by_xpath(
                 live_info_xpath).get_attribute("href")
 
             # name 直接可用
             # 制作name_xpath
             name_xpath = '//*[@id="signleCourseList"]/li[' + str(i) + ']/p'
             # 获取 name 对应信息name
-            name = browser.find_element_by_xpath(
+            name = browser_getIndex.find_element_by_xpath(
                 name_xpath).get_attribute("textContent")
             name = name.replace(" ", "")
-            HTML_info_temp = browser.page_source
+            HTML_info_temp = browser_getIndex.page_source
 
             # 检索文字设定：live_info_inse
             live_info_inse = re.compile(
@@ -201,8 +201,8 @@ if oneOrAll == '2':
                     ErrorURLWriter.writerow(
                         [str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))), name, websiteUrl, '超星未上传'])
                 print('        处理失败，已记录，可能超星尚未上传')
-        # 任务结束，关闭浏览器
-        browser.close()
+        # 关闭浏览器http://newesxidian.chaoxing.com/live/viewNewCourseLive1?liveId=11082472
+        browser_getIndex.quit()
         print('解析任务结束！')
 
 # 仅解析当前链接
@@ -236,7 +236,7 @@ elif oneOrAll == '1':
         live_info_xpath = '//*[@id="signleCourseList"]/li[' + \
             str(i) + ']/div/a'
         # 获取 id 对应信息live_info_temp
-        live_info_temp = browser.find_element_by_xpath(
+        live_info_temp = browser_getIndex.find_element_by_xpath(
             live_info_xpath).get_attribute("href")
         live_info_inse = re.compile(
             r'([1-9][0-9]{4,})', re.S)  # 正则匹配
@@ -249,9 +249,11 @@ elif oneOrAll == '1':
     i = i - 1
     name_xpath = '//*[@id="signleCourseList"]/li[' + str(i) + ']/p'
     # 获取 name 对应信息name
-    name = browser.find_element_by_xpath(
+    name = browser_getIndex.find_element_by_xpath(
         name_xpath).get_attribute("textContent")
     name = name.replace(" ", "")
+    # Index任务结束，关闭Index浏览器
+    browser_getIndex.quit()
 
     # 获取m3u8所有信息
     try:
@@ -356,31 +358,41 @@ if ifDownload == '1':  # 开始下载
                 print('            mobile已存在，跳过')
             else:
                 print('            正在下载mobile')
-                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 32 --minThreads 2 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_mobile', str(m3u8_mobile[i])),
+                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 32 --minThreads 1 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_mobile', str(m3u8_mobile[i])),
                                      shell=True)
                 return_code = p.wait()  # 等待子进程结束，并返回状态码；
         # 处理 m3u8_teacherTrack
         if if_m3u8_teacherTrack == '1':
             my_file = Path(savaFold+'\\'+class_name+'\\' + '视频' + '\\' +
                            str(name[i]) + '_teacherTrack' + '.mp4')
-            if my_file.exists():
+            my_file_compress = Path(savaFold+'\\'+class_name+'\\' + '视频' + '\\' +
+                                    str(name[i]) + '.mp4')
+            if my_file.exists() or my_file_compress.exists():
                 # 查看指定的文件或目录是否存在
-                print('            teacherTrack已存在，跳过')
+                if my_file.exists():
+                    print('            teacherTrack已存在，跳过')
+                if my_file_compress.exists():
+                    print('            合并文件已存在，跳过')
             else:
                 print('            正在下载teacherTrack')
-                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 32 --minThreads 2 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_teacherTrack', str(m3u8_teacherTrack[i])),
+                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 32 --minThreads 1 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_teacherTrack', str(m3u8_teacherTrack[i])),
                                      shell=True)
                 return_code = p.wait()  # 等待子进程结束，并返回状态码；
         # 处理 m3u8_pptVideo
         if if_m3u8_pptVideo == '1':
             my_file = Path(savaFold+'\\'+class_name+'\\' + '视频' + '\\' +
                            str(name[i]) + '_pptVideo' + '.mp4')
-            if my_file.exists():
+            my_file_compress = Path(savaFold+'\\'+class_name+'\\' + '视频' + '\\' +
+                                    str(name[i]) + '.mp4')
+            if my_file.exists() or my_file_compress.exists():
                 # 查看指定的文件或目录是否存在
-                print('            pptVideo已存在，跳过')
+                if my_file.exists():
+                    print('            pptVideo已存在，跳过')
+                if my_file_compress.exists():
+                    print('            合并文件已存在，跳过')
             else:
                 print('            正在下载pptVideo')
-                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 32 --minThreads 2 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_pptVideo', str(m3u8_pptVideo[i])),
+                p = subprocess.Popen('N_m3u8DL-CLI --maxThreads 32 --minThreads 1 --disableIntegrityCheck --enableDelAfterDone --retryCount 2 --workDir %s --saveName %s %s' % (savaFold+'\\'+class_name+'\\'+'视频', str(name[i])+'_pptVideo', str(m3u8_pptVideo[i])),
                                      shell=True)
                 return_code = p.wait()  # 等待子进程结束，并返回状态码；
     print('下载任务结束！')
@@ -405,18 +417,18 @@ if ifCompose == '1':  # 执行合并
         if my_file.exists():
             print('        已存在，跳过')
         else:
-            print('        正在调用ffmpeg合并视频，会很久，请耐心等候')
+            print('        正在调用ffmpeg合并视频，会很久(一般每个30分钟之内)，请耐心等候，程序没挂！！')
             # 调用GPU硬件加速视频拼接
-            p = subprocess.Popen('ffmpeg -hwaccel cuda -i %s.mp4 -i %s.mp4 -filter_complex "pad=3360:1080:color=red[x0];[0:v]scale=w=1920:h=1080[inn0];[x0][inn0]overlay=0:0[x1];[1:v]scale=w=1440:h=1080[inn1];[x1][inn1]overlay=1920:0" -c:v hevc_nvenc %s.mp4' % (savaFold+'\\'+class_name+'\\'+'视频'+'\\'+str(name[i])+'_teacherTrack', savaFold+'\\'+class_name+'\\'+'视频'+'\\'+str(name[i])+'_pptVideo', savaFold+'\\'+class_name+'\\'+'视频'+'\\'+str(name[i])),
+            p = subprocess.Popen('ffmpeg -loglevel fatal -hwaccel cuda -i %s.mp4 -i %s.mp4 -filter_complex "pad=3360:1080:color=red[x0];[0:v]scale=w=1920:h=1080[inn0];[x0][inn0]overlay=0:0[x1];[1:v]scale=w=1440:h=1080[inn1];[x1][inn1]overlay=1920:0" -c:v hevc_nvenc %s.mp4' % (savaFold+'\\'+class_name+'\\'+'视频'+'\\'+str(name[i])+'_teacherTrack', savaFold+'\\'+class_name+'\\'+'视频'+'\\'+str(name[i])+'_pptVideo', savaFold+'\\'+class_name+'\\'+'视频'+'\\'+str(name[i])),
                                  shell=True)
             # -loglevel quiet fatal 可以关闭ffmpeg输出
             return_code = p.wait()  # 等待子进程结束，并返回状态码；
-            if return_code == '0':
+            if return_code == 0:
                 print('            视频合并成功！')
             else:
                 # 清除ffmpeg合并失败创建的文件
-                # p = subprocess.Popen('del>nul 2>nul %s' % (savaFold+'\\'+class_name+'\\'+'视频'+'\\'+str(name[i])+'.mp4'),
-                #                      stdout=None, shell=True)
+                p = subprocess.Popen('del>nul 2>nul %s' % (savaFold+'\\'+class_name+'\\'+'视频'+'\\'+str(name[i])+'.mp4'),
+                                     stdout=None, shell=True)
                 return_code = p.wait()  # 等待子进程结束，并返回状态码；
                 print('            合并失败，请检查设备是否支持！')
     print('视频合并任务结束！')
